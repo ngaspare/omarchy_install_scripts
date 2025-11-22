@@ -2,38 +2,44 @@
 
 ORIGINAL_DIR=$(pwd)
 REPO_URL="https://github.com/ngaspare/dotfiles-omarchy"
-REPO_NAME="dotfiles"
+REPO_NAME="dotfiles-omarchy"
 
 is_stow_installed() {
-  pacman -Qi "stow" &> /dev/null
+    pacman -Qi "stow" &>/dev/null
 }
 
 if ! is_stow_installed; then
-  echo "Install stow first"
-  exit 1
+    echo "Install stow first"
+    exit 1
 fi
 
 cd ~
 
 # Check if the repository already exists
 if [ -d "$REPO_NAME" ]; then
-  echo "Repository '$REPO_NAME' already exists. Skipping clone"
+    echo "Repository '$REPO_NAME' already exists. Skipping clone"
 else
-  git clone "$REPO_URL"
+    git clone "$REPO_URL"
 fi
 
 # Check if the clone was successful
 if [ $? -eq 0 ]; then
-  echo "removing old configs"
-  # rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
+    echo "removing old configs"
+    # rm -rf ~/.config/nvim ~/.config/starship.toml ~/.local/share/nvim/ ~/.cache/nvim/ ~/.config/ghostty/config
 
-  cd "$REPO_NAME"
-  stow bashrc
-  stow tmux
-  stow waybar
-  # stow starship
+    cd "$REPO_NAME"
+    # copy original .bashrc file
+    mv ~/.bashrc ~/.bashrc.bak
+    stow bashrc
+
+    stow tmux
+
+    # copy original waybar config file
+    mv ~/.config/waybar/config.jsonc ~/.config/waybar/config.jsonc.bak
+    stow waybar
+
+    # stow starship
 else
-  echo "Failed to clone the repository."
-  exit 1
+    echo "Failed to clone the repository."
+    exit 1
 fi
-
