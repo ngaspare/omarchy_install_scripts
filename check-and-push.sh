@@ -20,17 +20,21 @@ for REPO in "${REPOS[@]}"; do
 
     cd "$REPO" || continue
 
-    if git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]; then
-        log "$REPO — no changes"
-        continue
+    # Commit any uncommitted changes
+    if ! (git diff --quiet && git diff --cached --quiet && [ -z "$(git ls-files --others --exclude-standard)" ]); then
+        git add -A
+        git commit -m "auto: $(date '+%Y-%m-%d')"
+        log "$REPO — committed changes"
     fi
 
-    git add -A
-    git commit -m "auto: $(date '+%Y-%m-%d')"
-
-    if git push; then
-        log "$REPO — pushed successfully"
+    # Push if there are unpushed commits
+    if [ -n "$(git log @{u}..HEAD 2>/dev/null)" ]; then
+        if git push; then
+            log "$REPO — pushed successfully"
+        else
+            log "$REPO — push failed (check SSH key is added to GitHub)"
+        fi
     else
-        log "$REPO — push failed (check SSH key is added to GitHub)"
+        log "$REPO — no changes"
     fi
 done
