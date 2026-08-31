@@ -19,21 +19,15 @@ rm -f "$HYPR_CONFIG_DIR/bindings.conf"
 rm -f "$HYPR_CONFIG_DIR/input.conf"
 rm -f "$HYPR_CONFIG_DIR/looknfeel.conf"
 rm -f "$HYPR_CONFIG_DIR/autostart.conf"
-rm -f "$HYPR_CONFIG_DIR/monitors.lua"  # using monitors.conf instead
+rm -f "$HYPR_CONFIG_DIR/monitors.conf"
 
 # Link custom Lua configs
-for file in bindings.lua input.lua looknfeel.lua autostart.lua hyprland.lua; do
+for file in bindings.lua input.lua looknfeel.lua autostart.lua hyprland.lua monitors.lua; do
     if [ -f "$CUSTOM_CONFIG_DIR/$file" ]; then
         ln -sf "$CUSTOM_CONFIG_DIR/$file" "$HYPR_CONFIG_DIR/$file"
         echo "  Linked $file"
     fi
 done
-
-# monitors.conf uses Hyprland native syntax (not Lua)
-if [ -f "$CUSTOM_CONFIG_DIR/monitors.conf" ]; then
-    ln -sf "$CUSTOM_CONFIG_DIR/monitors.conf" "$HYPR_CONFIG_DIR/monitors.conf"
-    echo "  Linked monitors.conf"
-fi
 
 # Remove old override mechanism (obsolete in Quattro)
 if grep -q "omarchy_install_scripts/hyprland-overrides.conf" "$HYPR_CONFIG_DIR/hyprland.conf" 2>/dev/null; then
