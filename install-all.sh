@@ -21,7 +21,10 @@ echo "=== Omarchy Quattro Custom Setup ==="
 # 3. Set up Hyprland custom configs
 "$SCRIPT_DIR/install-hyprland.sh"
 
-# 4. Set up daily auto-commit timer (optional, requires SSH key on GitHub)
+# 4. Set up custom Omarchy shell (bar) config and plugins
+"$SCRIPT_DIR/install-omarchy-shell.sh"
+
+# 5. Set up daily auto-commit timer (optional, requires SSH key on GitHub)
 "$SCRIPT_DIR/install-autocommit.sh"
 
 echo ""
