@@ -29,11 +29,20 @@ for REPO in "${REPOS[@]}"; do
 
     # Push if there are unpushed commits
     if [ -n "$(git log @{u}..HEAD 2>/dev/null)" ]; then
-        if git push; then
-            log "$REPO — pushed successfully"
-        else
-            log "$REPO — push failed (check SSH key is added to GitHub)"
-        fi
+        # Right after boot DNS/networking may not be up yet; wait up to ~90s
+        for i in $(seq 1 30); do
+            getent hosts github.com >/dev/null 2>&1 && break
+            sleep 3
+        done
+
+        for attempt in 1 2 3; do
+            if git push; then
+                log "$REPO — pushed successfully"
+                break
+            fi
+            log "$REPO — push failed (attempt $attempt/3, check SSH key or network)"
+            sleep 15
+        done
     else
         log "$REPO — no changes"
     fi
