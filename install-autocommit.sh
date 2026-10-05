@@ -41,6 +41,7 @@ cat > "$SERVICE_DIR/omarchy-autocommit.timer" << EOF
 Description=Daily auto-commit of omarchy configs
 
 [Timer]
+OnBootSec=2min
 OnCalendar=daily
 Persistent=true
 
