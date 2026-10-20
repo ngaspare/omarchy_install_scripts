@@ -9,10 +9,10 @@
 #   3. Clone this repo: git clone git@github.com:ngaspare/omarchy_install_scripts.git ~/omarchy_install_scripts
 #   4. Run this script: ./install-all.sh
 #   5. Check monitor layout: hyprctl monitors
-#      hypr-configs/monitors.lua assumes eDP-1 (left) / HDMI-A-1 (center) /
-#      DP-1 (right) at 0x0 / 1920x0 / 3840x0. If the new machine's outputs or
-#      physical layout differ, edit the hl.monitor positions and the
-#      hl.workspace_rule monitor mappings in that file, then commit+push.
+#      The known eDP-1 / HDMI-A-1 / DP-1 three-monitor layout is preserved.
+#      On a machine with different output names, or with only one monitor,
+#      monitors.lua automatically uses Hyprland's preferred mode and layout.
+#      Edit monitors.lua only if that machine needs a custom fixed layout.
 #   6. Reload Hyprland: SUPER+SHIFT+R (or re-login), and: omarchy restart shell
 
 set -e
