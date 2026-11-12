@@ -31,6 +31,8 @@
 
 -- Move "Close window" from SUPER+W to SUPER+SHIFT+Q
 hl.unbind("SUPER + W")
+-- Omarchy now assigns SUPER+SHIFT+Q to the calculator; replace that binding.
+hl.unbind("SUPER + SHIFT + Q")
 o.bind("SUPER + SHIFT + Q", "Close window", hl.dsp.window.close())
 
 -- Move "File manager" from SUPER+SHIFT+F to SUPER+E
@@ -54,4 +56,14 @@ for workspace = 11, 19 do
   local key = "code:" .. tostring(workspace - 1)
   o.bind("SUPER + CTRL + " .. key, "Switch to workspace " .. workspace, hl.dsp.focus({ workspace = tostring(workspace) }))
   o.bind("SUPER + SHIFT + CTRL + " .. key, "Move window to workspace " .. workspace, hl.dsp.window.move({ workspace = tostring(workspace) }))
+end
+
+-- Use the same physical keycodes as Omarchy's default bindings, but target
+-- absolute workspace IDs so numbers work consistently across monitors.
+for workspace = 1, 10 do
+  local key = "code:" .. tostring(workspace + 9)
+  hl.unbind("SUPER + " .. key)
+  hl.unbind("SUPER + SHIFT + " .. key)
+  o.bind("SUPER + " .. key, "Switch to workspace " .. workspace, hl.dsp.focus({ workspace = tostring(workspace) }))
+  o.bind("SUPER + SHIFT + " .. key, "Move window to workspace " .. workspace, hl.dsp.window.move({ workspace = tostring(workspace) }))
 end
